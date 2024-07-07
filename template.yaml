@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  admin-portal-sam
+
+  SAM Template for admin-portal-sam
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  ManageItemsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app/
+      Handler: items.handler
+      Runtime: nodejs20.x
+      Architectures:
+        - x86_64
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        GetAllItems:
+          Type: Api
+          Properties:
+            Path: /items
+            Method: get
+        GetItem:
+          Type: Api
+          Properties:
+            Path: /items/{id}
+            Method: get
+        PutItem:
+          Type: Api
+          Properties:
+            Path: /items
+            Method: put
+        DeleteItem:
+          Type: Api
+          Properties:
+            Path: /items/{id}
+            Method: delete
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        Sourcemap: true
+        EntryPoints:
+          - lambda/items.ts
+  DynamoDBItemsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: items
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+Outputs:
+  ManageItemsApi:
+    Description: API Gateway endpoint URL for test ManageItems
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/items'
+  ManageItemsFunction:
+    Description: ManageItems Lambda Function ARN
+    Value: !GetAtt ManageItemsFunction.Arn
+  ManageItemsFunctionIamRole:
+    Description: Implicit IAM Role created for ManageItems function
+    Value: !GetAtt ManageItemsFunctionRole.Arn
+  DynamoDBItemsTable:
+    Description: DynamoDB Items Table ARN
+    Value: !GetAtt DynamoDBItemsTable.Arn
