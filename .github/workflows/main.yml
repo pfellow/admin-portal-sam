@@ -16,8 +16,8 @@ jobs:
           cd app
       - name: Setup Node
         uses: actions/setup-node@v4
-        with:
-          cache: 'npm'
+        # with:
+        #   cache: 'npm'
       - name: Node modules
         run:
           npm i
