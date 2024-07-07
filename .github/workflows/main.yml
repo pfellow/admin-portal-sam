@@ -17,8 +17,8 @@ jobs:
         # with:
         #   cache: 'npm'
       - name: Node modules
-        run:
-          cd app |
+        run: |
+          cd app
           npm i
       - name: Lint
         run:
