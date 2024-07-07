@@ -9,16 +9,18 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
       - name: Setup Node
         uses: actions/setup-node@v4
-        # with:
-        #   cache: 'npm'
+        with:
+          cache: 'npm'
       - name: Node modules
-        run: |
-          cd app
+        run:
           npm i
       - name: Lint
         run:
