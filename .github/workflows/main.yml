@@ -17,8 +17,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Node
         uses: actions/setup-node@v4
-        with:
-          cache: 'npm'
+        # with:
+        #   cache: 'npm'
       - name: Node modules
         run:
           npm i
