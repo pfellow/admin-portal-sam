@@ -47,3 +47,23 @@ jobs:
         run: sam build --use-container
       - name: SAM deploy
         run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+  swagger-specs:
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+      - name: Set AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Generate API specs
+        run:
+          get-api-specs.sh
+      - name: Upload specs
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-specs
+          path: api-specs
