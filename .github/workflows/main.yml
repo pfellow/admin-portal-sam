@@ -49,8 +49,6 @@ jobs:
   #       run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
   swagger-specs:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     #needs: [deploy]
     steps:
       - name: 🚚 Get latest code
