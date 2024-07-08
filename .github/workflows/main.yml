@@ -60,8 +60,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Generate API specs
-        run:
-          get-api-specs.sh
+        run: ./get-api-specs.sh
       - name: Upload specs
         uses: actions/upload-artifact@v4
         with:
