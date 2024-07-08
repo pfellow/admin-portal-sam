@@ -50,7 +50,7 @@ jobs:
   swagger-specs:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     #needs: [deploy]
     steps:
       - name: 🚚 Get latest code
